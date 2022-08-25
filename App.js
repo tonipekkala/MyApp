@@ -1,5 +1,7 @@
-import {StyleSheet, Text, View, FlatList, TouchableOpacity, Image,SafeAreaView } from 'react-native';
 import {StatusBar} from 'expo-status-bar';
+import {Platform, SafeAreaView, StyleSheet} from 'react-native';
+
+import List from './components/List';
 
 const mediaArray = [
   {
@@ -33,55 +35,18 @@ const mediaArray = [
 
 const App = () => {
   return (
-    <>
-      <SafeAreaView  style={styles.container}>
-
-        <Text>Hei Open up App.js to start working on your app!</Text>
-
-        <FlatList
-          data={mediaArray}
-          renderItem={({item}) => {
-            return (
-              <TouchableOpacity style={styles.container2}>
-                <Image
-                  style={{width: 200, height: 200}}
-                  source={{uri: item.thumbnails.w160}}
-                />
-                <SafeAreaView style={styles.container3}>
-                  <Text style={{fontWeight: 'bold'}}>{item.title}</Text>
-                  <Text>{item.description}</Text>
-                </SafeAreaView >
-              </TouchableOpacity>
-            );
-          }}
-        />
-
-      </SafeAreaView >
-
-
-      <StatusBar style="auto"/>
-    </>
+    <SafeAreaView style={styles.droidSafeArea}>
+      <List />
+      <StatusBar style="auto" />
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  droidSafeArea: {
     flex: 1,
-    backgroundColor: '#e0e0e0',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  container2: {
-    flex: 1,
-    backgroundColor: '#909090',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
-    width: 'auto',
-  },
-  container3: {
-    width: '50%',
-    marginLeft: '3%',
+    backgroundColor: '#fff',
+    paddingTop: Platform.OS === 'android' ? 30 : 0,
   },
 });
 
