@@ -23,9 +23,6 @@ const useMedia = () => {
     loadMedia();
   }, []);
 
-  // TODO: move mediaArray state here
-  // TODO: move loadMedia function here
-  // TODO: move useEffect here
   return {mediaArray};
 };
 
