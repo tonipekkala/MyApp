@@ -1,7 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {Input, Button, Text} from '@rneui/themed';
 import {useContext} from 'react';
 import {Controller, useForm} from 'react-hook-form';
-import {View, Text, Button, TextInput} from 'react-native';
+import {View} from 'react-native';
 import {MainContext} from '../contexts/MainContext';
 import {useLogin, useUser} from '../hooks/ApiHooks';
 
@@ -39,7 +40,7 @@ const RegisterForm = () => {
           minLength: 3,
         }}
         render={({field: {onChange, onBlur, value}}) => (
-          <TextInput
+          <Input
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
@@ -57,7 +58,7 @@ const RegisterForm = () => {
           required: true,
         }}
         render={({field: {onChange, onBlur, value}}) => (
-          <TextInput
+          <Input
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
@@ -74,7 +75,7 @@ const RegisterForm = () => {
           required: true,
         }}
         render={({field: {onChange, onBlur, value}}) => (
-          <TextInput
+          <Input
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
@@ -93,7 +94,7 @@ const RegisterForm = () => {
           minLength: 3,
         }}
         render={({field: {onChange, onBlur, value}}) => (
-          <TextInput
+          <Input
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}

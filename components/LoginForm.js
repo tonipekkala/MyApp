@@ -1,7 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {Input, Button, Text} from '@rneui/themed';
 import {useContext} from 'react';
 import {Controller, useForm} from 'react-hook-form';
-import {View, Text, Button, TextInput} from 'react-native';
+import {View} from 'react-native';
 import {MainContext} from '../contexts/MainContext';
 import {useLogin} from '../hooks/ApiHooks';
 
@@ -39,11 +40,12 @@ const LoginForm = () => {
           minLength: 3,
         }}
         render={({field: {onChange, onBlur, value}}) => (
-          <TextInput
+          <Input
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
             placeholder="Username"
+            autoCapitalize="none"
           />
         )}
         name="username"
@@ -57,12 +59,15 @@ const LoginForm = () => {
           required: true,
         }}
         render={({field: {onChange, onBlur, value}}) => (
-          <TextInput
+          <Input
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
             secureTextEntry={true}
             placeholder="Password"
+            autoCapitalize="none"
+            errorMessage=" "
+            width="5%"
           />
         )}
         name="password"
