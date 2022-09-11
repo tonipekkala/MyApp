@@ -6,7 +6,7 @@ const useMedia = () => {
   const [mediaArray, setMediaArray] = useState([]);
   const loadMedia = async () => {
     try {
-      const json = await doFetch(apiUrl + 'media?limit=5');
+      const json = await doFetch(apiUrl + 'media?limit=30');
       console.log(json);
       const allMediaData = json.map(async (mediaItem) => {
         return await doFetch(apiUrl + 'media/' + mediaItem.file_id);
@@ -44,6 +44,16 @@ const useLogin = () => {
 };
 
 const useUser = () => {
+  const checkUsername = async (username) => {
+    try {
+      const result = await doFetch(apiUrl + 'users/username/' + username);
+      console.log('checkUsername():', result);
+      return result.available;
+    } catch (error) {
+      console.log('checkUsername() failed', error);
+    }
+  };
+
   const getUserByToken = async (token) => {
     try {
       const options = {
@@ -72,7 +82,7 @@ const useUser = () => {
     }
   };
 
-  return {getUserByToken, postUser};
+  return {checkUsername, getUserByToken, postUser};
 };
 
 const useTag = () => {

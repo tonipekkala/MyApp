@@ -1,8 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {Input, Button, Text} from '@rneui/themed';
+import {Input, Button, Text, Card} from '@rneui/themed';
 import {useContext} from 'react';
 import {Controller, useForm} from 'react-hook-form';
-import {View} from 'react-native';
 import {MainContext} from '../contexts/MainContext';
 import {useLogin} from '../hooks/ApiHooks';
 
@@ -31,8 +30,8 @@ const LoginForm = () => {
   };
 
   return (
-    <View>
-      <Text>Login Form</Text>
+    <Card>
+      <Card.Title>Login</Card.Title>
       <Controller
         control={control}
         rules={{
@@ -46,13 +45,18 @@ const LoginForm = () => {
             value={value}
             placeholder="Username"
             autoCapitalize="none"
+            errorMessage={
+              (errors.username?.type === 'required' && (
+                <Text>This is required.</Text>
+              )) ||
+              (errors.username?.type === 'minLength' && (
+                <Text>Min 3 chars!</Text>
+              ))
+            }
           />
         )}
         name="username"
       />
-      {errors.username?.type === 'required' && <Text>This is required.</Text>}
-      {errors.username?.type === 'minLength' && <Text>Min 3 chars!</Text>}
-
       <Controller
         control={control}
         rules={{
@@ -65,17 +69,14 @@ const LoginForm = () => {
             value={value}
             secureTextEntry={true}
             placeholder="Password"
-            autoCapitalize="none"
-            errorMessage=" "
-            width="5%"
+            errorMessage={errors.password && <Text>This is required.</Text>}
           />
         )}
         name="password"
       />
-      {errors.password && <Text>This is required.</Text>}
 
       <Button title="Sign in!" onPress={handleSubmit((data) => logIn(data))} />
-    </View>
+    </Card>
   );
 };
 

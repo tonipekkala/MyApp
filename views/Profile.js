@@ -5,6 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useTag} from '../hooks/ApiHooks';
 import {mediaUrl} from '../utils/variables';
 import {Avatar, Button, Card, Icon, ListItem, Text} from '@rneui/themed';
+import {ScrollView} from 'react-native';
 
 const Profile = () => {
   const {isLoggedIn, setIsLoggedIn, user} = useContext(MainContext);
@@ -37,25 +38,27 @@ const Profile = () => {
   };
 
   return (
-    <Card>
-      <Card.Title>
-        <Icon name="person" />
-        User: {user.username} id: {user.user_id}
-      </Card.Title>
-      <Card.Image source={{uri: avatar}} />
-      <ListItem>
-        <Avatar
-          icon={{name: 'contact-mail', type: 'material'}}
-          containerStyle={{backgroundColor: '#aaa'}}
-        />
-        <Text>Email: {user.email}</Text>
-      </ListItem>
-      <ListItem>
-        <Icon name="person" />
-        <Text>Full name: {user.full_name}</Text>
-      </ListItem>
-      <Button title="Logout" onPress={logOut} />
-    </Card>
+    <ScrollView>
+      <Card>
+        <Card.Title>
+          <Icon name="person" />
+          User: {user.username} id: {user.user_id}
+        </Card.Title>
+        <Card.Image source={{uri: avatar}} />
+        <ListItem>
+          <Avatar
+            icon={{name: 'contact-mail', type: 'material'}}
+            containerStyle={{backgroundColor: '#aaa'}}
+          />
+          <Text>Email: {user.email}</Text>
+        </ListItem>
+        <ListItem>
+          <Icon name="person" />
+          <Text>Full name: {user.full_name}</Text>
+        </ListItem>
+        <Button title="Logout" onPress={logOut} />
+      </Card>
+    </ScrollView>
   );
 };
 
