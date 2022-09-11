@@ -14,14 +14,13 @@ const Profile = () => {
     try {
       const avatarArray = await getFilesByTag('avatar_' + user.user_id);
       const avatarFile = avatarArray.pop();
-      setAvatar('https://placekitten.com/200');
+      setAvatar(mediaUrl + avatarFile.filename);
       console.log(avatarFile);
     } catch (error) {
       console.log('fetchAvatar', error.message);
     }
   };
   console.log('Profile', isLoggedIn);
-
   useEffect(() => {
     fetchAvatar();
   }, []);
