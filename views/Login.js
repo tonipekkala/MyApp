@@ -12,12 +12,12 @@ const Login = ({navigation}) => {
   // props is needed for navigation
   const {setIsLoggedIn, setUser} = useContext(MainContext);
   const {getUserByToken} = useUser();
-  const [showRegForm, setShowReqForm] = useState(false);
+  const [showRegForm, setShowRegForm] = useState(false);
 
   const checkToken = async () => {
-    const userToken = await AsyncStorage.getItem('userToken');
-    console.log('token', userToken);
     try {
+      const userToken = await AsyncStorage.getItem('userToken');
+      console.log('token', userToken);
       // TODO: call getUserByToken(userToken), if you get successful result,
       // set isLoggedIn to true and navigate to Tabs
       if (userToken != null) {
@@ -39,11 +39,9 @@ const Login = ({navigation}) => {
     <View>
       {showRegForm ? <RegisterForm /> : <LoginForm />}
       <Button
-        title={
-          showRegForm ? 'Already have an account?' : 'Register a new account'
-        }
+        title={showRegForm ? 'or sign in' : 'Register a new account'}
         onPress={() => {
-          setShowReqForm(!showRegForm);
+          setShowRegForm(!showRegForm);
         }}
       ></Button>
     </View>
