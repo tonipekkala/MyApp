@@ -1,15 +1,16 @@
-import {useContext, useEffect, useState} from 'react';
-
+import {useContext, useState, useEffect} from 'react';
 import {MainContext} from '../contexts/MainContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useTag} from '../hooks/ApiHooks';
 import {mediaUrl} from '../utils/variables';
-import {Avatar, Button, Card, Icon, ListItem, Text} from '@rneui/themed';
+import {Avatar, Button, Card, ListItem} from '@rneui/themed';
+import FullSizeImage from '../components/FullSizeImage';
 import {ScrollView} from 'react-native';
+import PropTypes from 'prop-types';
 
-const Profile = () => {
+const Profile = ({navigation}) => {
   const {isLoggedIn, setIsLoggedIn, user} = useContext(MainContext);
-  const [avatar, setAvatar] = useState('https://placekitten.com/200');
+  const [avatar, setAvatar] = useState('https://placekitten.com/640');
   const {getFilesByTag} = useTag();
 
   const fetchAvatar = async () => {
@@ -17,16 +18,17 @@ const Profile = () => {
       const avatarArray = await getFilesByTag('avatar_' + user.user_id);
       const avatarFile = avatarArray.pop();
       setAvatar(mediaUrl + avatarFile.filename);
-      console.log(avatarFile);
+      console.log('avatarArray', mediaUrl + avatarFile.filename);
     } catch (error) {
       console.log('fetchAvatar', error.message);
     }
   };
-  console.log('Profile', isLoggedIn);
 
   useEffect(() => {
     fetchAvatar();
   }, []);
+
+  console.log('Profile', isLoggedIn);
 
   const logOut = async () => {
     try {
@@ -40,26 +42,38 @@ const Profile = () => {
   return (
     <ScrollView>
       <Card>
-        <Card.Title>
-          <Icon name="person" />
-          User: {user.username} id: {user.user_id}
-        </Card.Title>
-        <Card.Image source={{uri: avatar}} />
+        <Card.Title>{user.full_name}</Card.Title>
+        <FullSizeImage source={{uri: avatar}} />
         <ListItem>
           <Avatar
             icon={{name: 'contact-mail', type: 'material'}}
             containerStyle={{backgroundColor: '#aaa'}}
           />
-          <Text>Email: {user.email}</Text>
+          <ListItem.Title>{user.email}</ListItem.Title>
         </ListItem>
         <ListItem>
-          <Icon name="person" />
-          <Text>Full name: {user.full_name}</Text>
+          <Avatar
+            icon={{name: 'person', type: 'material'}}
+            containerStyle={{backgroundColor: '#aaa'}}
+          />
+          <ListItem.Title>
+            {user.username} (id: {user.user_id})
+          </ListItem.Title>
         </ListItem>
+        <Button
+          title="MyFiles"
+          onPress={() => {
+            navigation.navigate('MyFiles');
+          }}
+        />
         <Button title="Logout" onPress={logOut} />
       </Card>
     </ScrollView>
   );
+};
+
+Profile.propTypes = {
+  navigation: PropTypes.object,
 };
 
 export default Profile;

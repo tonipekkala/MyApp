@@ -6,9 +6,11 @@ import Home from '../views/Home';
 import Profile from '../views/Profile';
 import Single from '../views/Single';
 import Login from '../views/Login';
-import Upload from '../views/Login';
 import {MainContext} from '../contexts/MainContext';
 import {Icon} from '@rneui/themed';
+import Upload from '../views/Upload';
+import MyFiles from '../views/MyFiles';
+import ModifyFile from '../views/ModifyFile';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -20,21 +22,21 @@ const TabScreen = () => {
         name="Home"
         component={Home}
         options={{
-          tabBarIcon: () => <Icon name="home" />,
+          tabBarIcon: ({color}) => <Icon name="home" color={color} />,
         }}
       />
       <Tab.Screen
         name="Profile"
         component={Profile}
         options={{
-          tabBarIcon: () => <Icon name="person" />,
+          tabBarIcon: ({color}) => <Icon name="person" color={color} />,
         }}
       />
       <Tab.Screen
         name="Upload"
         component={Upload}
         options={{
-          tabBarIcon: ({color}) => <Icon name="cloud-upload" />,
+          tabBarIcon: ({color}) => <Icon name="cloud-upload" color={color} />,
         }}
       />
     </Tab.Navigator>
@@ -53,9 +55,17 @@ const StackScreen = () => {
             options={{headerShown: false}}
           />
           <Stack.Screen name="Single" component={Single} />
+          <Stack.Screen name="MyFiles" component={MyFiles} />
+          <Stack.Screen name="ModifyFile" component={ModifyFile} />
         </>
       ) : (
-        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen
+          name="Login"
+          component={Login}
+          options={{
+            title: 'MyApp',
+          }}
+        />
       )}
     </Stack.Navigator>
   );

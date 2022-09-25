@@ -1,16 +1,19 @@
-import {useEffect, useState} from 'react';
+import {useContext, useEffect, useState} from 'react';
+import {MainContext} from '../contexts/MainContext';
 import {doFetch} from '../utils/http';
-import {apiUrl} from '../utils/variables';
+import {apiUrl, applicationTag} from '../utils/variables';
 
-const useMedia = (update) => {
+const useMedia = (update, myFilesOnly = false) => {
   const [mediaArray, setMediaArray] = useState([]);
-  // TODO: Modify loadMedia() in ApiHooks.js
-  // to show only the files which have the identifier tag of your app.
-  // tag is in variables.js
+  const {user} = useContext(MainContext);
   const loadMedia = async () => {
     try {
-      const json = await doFetch(apiUrl + 'media?limit=10');
+      let json = await useTag().getFilesByTag(applicationTag);
       console.log(json);
+      if (myFilesOnly) {
+        json = json.filter((file) => file.user_id === user.user_id);
+      }
+      json.reverse();
       const allMediaData = json.map(async (mediaItem) => {
         return await doFetch(apiUrl + 'media/' + mediaItem.file_id);
       });
@@ -37,7 +40,32 @@ const useMedia = (update) => {
     }
   };
 
-  return {mediaArray, postMedia};
+  const putMedia = async (token, data, fileId) => {
+    const options = {
+      method: 'PUT',
+      headers: {'Content-Type': 'application/json', 'x-access-token': token},
+      body: JSON.stringify(data),
+    };
+    try {
+      return await doFetch(apiUrl + 'media/' + fileId, options);
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  };
+
+  const deleteMedia = async (token, fileId) => {
+    const options = {
+      method: 'DELETE',
+      headers: {'x-access-token': token},
+    };
+    try {
+      return await doFetch(apiUrl + 'media/' + fileId, options);
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  };
+
+  return {mediaArray, postMedia, putMedia, deleteMedia};
 };
 
 const useLogin = () => {
@@ -85,6 +113,7 @@ const useUser = () => {
   };
 
   const postUser = async (userData) => {
+    // console.log('creating user', userData);
     const options = {
       method: 'POST',
       headers: {
@@ -99,7 +128,9 @@ const useUser = () => {
     }
   };
 
-  return {checkUsername, getUserByToken, postUser};
+  const getUserById = () => {};
+
+  return {checkUsername, getUserByToken, postUser, getUserById};
 };
 
 const useTag = () => {
